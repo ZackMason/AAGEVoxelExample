@@ -25,7 +25,7 @@ static constexpr v3f sky_color{0.3f, 0.2f, 1.0f};
 
 struct game_t {
     orbit_camera_t camera{45.0f, 1.0f, 1.0f, 0.1f, 100.0f};
-    world_chunk_t<32,2,32> current_chunk{};
+    world_chunk_t<32,32,32> current_chunk{};
     //world_chunk_t<64,128,64> current_chunk{};
     asset_loader_t asset_loader{};
 
@@ -46,6 +46,8 @@ struct camera_u {
 };
 
 int main(int argc, char** argv) {
+    random_s::randomize();
+
     window_t window;
     window.width = 640;
     window.height = 480;
@@ -98,7 +100,7 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         /////////////////////////////
         // Update 
-        game.camera.update(window, 1.0f / 60.0f);
+        game.camera.update(window, 1.0f / 120.0f);
 
         /////////////////////////////
         // Render

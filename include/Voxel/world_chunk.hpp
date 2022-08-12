@@ -11,11 +11,10 @@
 #include "Graphics/vertex_array.hpp"
 
 #include "Util/random.hpp"
+#include "Util/logger.hpp"
 
 struct voxel_t {
-    v3f     position;
     int     flag{0};
-    int     faces{0};
 };
 
 template <size_t W, size_t H, size_t D>
@@ -42,14 +41,17 @@ struct world_chunk_t {
         for (int x = 0; x < W; x++) {
             for (int y = 0; y < H; y++) {
                 for (int z = 0; z < D; z++) {
-                    get_voxel(x,y,z).position = v3f{x,y,z};
-                    get_voxel(x,y,z).flag = 1;// random_s::rand() % 2;
+                    get_voxel(x,y,z).flag = random_s::rand() % 2;
                     if (get_voxel(x,y,z).flag) {
                         emit_cube(v3f{x,y,z});
                     }
                 }
             }
         }
+
+        logger_t::info(fmt::format("buffer size: {}", buffer.data.size()));
+        vertex_array.size = static_cast<GLsizei>(buffer.data.size());
+        logger_t::info(fmt::format("vao size: {}", vertex_array.size));
         buffer.create();
 
         vertex_array.bind_ref()
@@ -58,7 +60,6 @@ struct world_chunk_t {
             .set_attrib(2, 2, GL_FLOAT, sizeof(vertex_t), offsetof(vertex_t, uv))
             .unbind();
 
-        //vertex_array.size = static_cast<GLsizei>(buffer.data.size());
 
         buffer.update_buffer();
         buffer.unbind();
