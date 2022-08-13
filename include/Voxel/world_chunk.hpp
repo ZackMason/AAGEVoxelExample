@@ -33,7 +33,7 @@ struct world_chunk_t {
     chunk_array_t<voxel_t> voxels{};
 
     world_chunk_t()
-        : buffer(), vertex_array(W*H*D*6*6)
+        : buffer(), vertex_array(0)
     {
         voxels.reserve(W*H*D);
         voxels.resize(W*H*D);
