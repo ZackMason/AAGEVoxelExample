@@ -26,9 +26,7 @@ static constexpr v3f sky_color{0.3f, 0.2f, 1.0f};
 struct game_t {
     orbit_camera_t camera{45.0f, 1.0f, 1.0f, 0.1f, 100.0f};
     world_chunk_t<32,32,32> current_chunk{};
-    //world_chunk_t<64,128,64> current_chunk{};
     asset_loader_t asset_loader{};
-
 };
 
 struct camera_u { 
@@ -36,7 +34,6 @@ struct camera_u {
     void* data() {
         return &p;
     }
-
     size_t size() const {
         return 1;
     }
@@ -74,8 +71,6 @@ int main(int argc, char** argv) {
         });
     });
 
-
-
     shared_buffer_t<camera_u> camera_buffer{
         create_shared_buffer(camera_u{v4f{game.camera.get_position(), 0.0f}, game.camera.view_projection()})
     };
@@ -91,8 +86,6 @@ int main(int argc, char** argv) {
         logger_t::error(fmt::format("Shader exception: {}", e.what()));
         std::terminate();
     }
-
-    logger_t::info("Init Completed");
 
     glEnable(GL_DEPTH_TEST);
 
@@ -116,13 +109,10 @@ int main(int argc, char** argv) {
 
         game.current_chunk.draw();
 
-
         /////////////////////////////
         window.poll_events();
         window.swap_buffers();
     }
-
-    
 
     return 0;
 }

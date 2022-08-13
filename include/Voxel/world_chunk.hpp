@@ -49,9 +49,6 @@ struct world_chunk_t {
             }
         }
 
-        logger_t::info(fmt::format("buffer size: {}", buffer.data.size()));
-        vertex_array.size = static_cast<GLsizei>(buffer.data.size());
-        logger_t::info(fmt::format("vao size: {}", vertex_array.size));
         buffer.create();
 
         vertex_array.bind_ref()
@@ -105,6 +102,8 @@ struct world_chunk_t {
         emit(1,-1);
         emit(-1,1);
         emit(-1,-1);
+
+        vertex_array.size = static_cast<GLsizei>(buffer.data.size());
     }
 };
 
