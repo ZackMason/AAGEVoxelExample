@@ -53,7 +53,6 @@ int main(int argc, char** argv) {
     window.height = 480;
     window.open_window();
 
-
     window.set_title("AAGE Template");
 
     game_t game{};
@@ -61,6 +60,9 @@ int main(int argc, char** argv) {
 
     window.set_event_callback([&](auto& event){
         event_handler_t handler;
+
+        handler.dispatch<mouse_scroll_event_t>(event, 
+            std::bind(&orbit_camera_t::on_scroll_event, &game.camera, std::placeholders::_1));
 
         handler.dispatch<key_event_t>(event, [&](const key_event_t& e) {
             switch(e.key) {
@@ -70,7 +72,6 @@ int main(int argc, char** argv) {
             }
             return true;
         });
-
     });
 
 
