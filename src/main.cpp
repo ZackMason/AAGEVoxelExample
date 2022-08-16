@@ -19,6 +19,8 @@
 
 #include "Math/transform.hpp"
 
+#include "Util/timer.hpp"
+
 #include "Voxel/world_chunk.hpp"
 
 static constexpr v3f sky_color{0.3f, 0.2f, 1.0f};
@@ -89,17 +91,24 @@ int main(int argc, char** argv) {
 
     glEnable(GL_DEPTH_TEST);
 
+    timer32_t timer;
+
     while(!window.should_close()) {
+        const auto dt = timer.get_dt(window.get_ticks());
+
+        window.set_title(fmt::format("AAGE Template - FPS: {}", int(1.0f / dt + 0.5f)).c_str());
+
         glClearColor(sky_color.r, sky_color.g, sky_color.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         /////////////////////////////
         // Update 
-        game.camera.update(window, 1.0f / 120.0f);
+        
+        game.camera.update(window, dt);
 
         /////////////////////////////
         // Render
 
-        // update camera
+        // update global camera uniform
         camera_u camera{v4f{game.camera.get_position(),0.0f}, game.camera.view_projection()};
         set_shared_buffer(camera_buffer, &camera);
 

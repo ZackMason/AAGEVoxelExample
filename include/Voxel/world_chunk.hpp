@@ -57,7 +57,6 @@ struct world_chunk_t {
             .set_attrib(2, 2, GL_FLOAT, sizeof(vertex_t), offsetof(vertex_t, uv))
             .unbind();
 
-
         buffer.update_buffer();
         buffer.unbind();
     }
@@ -84,12 +83,13 @@ struct world_chunk_t {
     }
 
     void emit_face(const v3f& pos, const v3f& dir) {
-        const v3f tangent = v3f{dir.y, dir.z, dir.x} * 0.45f;
-        const v3f bitangent = glm::normalize(glm::cross(dir, tangent)) * 0.45f;
+        const f32 scale = 0.5f;
+        const v3f tangent = v3f{dir.y, dir.z, dir.x} * scale;
+        const v3f bitangent = glm::normalize(glm::cross(dir, tangent)) * scale;
 
         const auto emit = [&](float i, float j) {
             vertex_t vertex;
-            vertex.position = pos + dir * 0.45f + tangent * i + bitangent * j;
+            vertex.position = pos + dir * scale + tangent * i + bitangent * j;
             vertex.normal = dir;
             vertex.uv = v2f{ i < 0 ? 0 : i, j < 0 ? 0 : j};
             buffer.data.push_back(vertex);
